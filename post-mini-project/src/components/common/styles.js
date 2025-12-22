@@ -14,6 +14,7 @@ export const frame = css`
     border: 2px solid #747474;
     border-radius: 30px;
     padding: 30px;
+    min-width: 1000px;
     width: 1000px;
     height: 650px;
     background-color: #000000;
@@ -47,11 +48,14 @@ export const loadingBox = css`
 
 /////////// <<LeftSideBar>> ///////////
 export const leftSideBar = css`
+    position: relative;
     display: flex;
     width: 100%;
     height: 100%;
-    flex-direction: column;
-    box-sizing: border-box;
+
+    & > div {
+        flex-grow:  1;
+    }
 `;
 
 export const sideBarContainer = css`
