@@ -46,6 +46,12 @@ export const modalLayout = css`
 
 export const postButton = css`
     text-shadow: 0 0 15px #00000066;
+    
+    &:disabled {
+        cursor: default;
+        color: #777777;
+        
+    }
 `;
 
 export const profileContainer = css`
