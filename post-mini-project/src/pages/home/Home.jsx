@@ -1,20 +1,21 @@
 /** @jsxImportSource @emotion/react */
 import Slider from "react-slick";
-import Loading from "../../components/common/Loading"; 
-import { useGetFeeds } from "../../queries/PostQueries";
-import * as s  from "./styles";
+import Loading from "../../components/common/Loading";
+import { useGetFeeds } from "../../queries/postQueries";
+import * as s from "./styles";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import { FadeLoader } from "react-spinners";
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { IoChatbubbleOutline } from "react-icons/io5";
+import Comment from "../../components/comment/Comment";
 
 function Home() {
-    const [ commentOpen, setCommentOpen ] = useState(false); 
+    const [ commentOpen, setCommentOpen ] = useState(0);
     const { isLoading, isFetching, data, hasNextPage, fetchNextPage } = useGetFeeds();
     const loadMoreRef = useRef();
-    
+
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
             const [obs] = entries;
@@ -26,15 +27,15 @@ function Home() {
         observer.observe(loadMoreRef.current);
     }, [hasNextPage]);
 
-    const handleCommentOnClick = () => {
-        setCommentOpen(!commentOpen);
+    const handleCommentOnClick = (postId) => {
+        setCommentOpen(commentOpen === postId ? 0 : postId);
     }
 
     return <div css={s.layout}>
         <div css={s.feedContainer(commentOpen)}>
             {
                 (isLoading && <Loading />) || data.pages.map(feeds => feeds.data.contents.map(feed => (
-                    <div key={feed.feedId} css={s.feedItemContainer}>
+                    <div key={feed.postId} css={s.feedItemContainer}>
                         <header>
                             <div css={s.profileImage(feed.user?.imgUrl)}></div>
                             <div css={s.userInfo}>
@@ -46,14 +47,15 @@ function Home() {
                             {
                                 feed.imageFiles && 
                                 <div css={s.feedImageContainer}>
-                                    <Slider 
+                                    <Slider
                                         infinite={true}
                                         speed={500}
                                         slidesToShow={1}
                                         slidesToScroll={1}>
                                             {
                                                 feed.imageFiles.map(file => (
-                                                <div css={s.feedImage("http://localhost:8080/image" + file.filePath)}></div>
+                                                    <div css={s.feedImage("http://localhost:8080/image" + file.filePath)}>
+                                                    </div>
                                                 ))
                                             }
                                     </Slider>
@@ -65,7 +67,7 @@ function Home() {
                         </main>
                         <footer>
                             <div>{false ? <IoMdHeart /> : <IoMdHeartEmpty />}</div>
-                            <div onClick={handleCommentOnClick}><IoChatbubbleOutline /></div>
+                            <div onClick={() => handleCommentOnClick(feed.postId)}><IoChatbubbleOutline /></div>
                         </footer>
                     </div>
                 )))
@@ -76,13 +78,16 @@ function Home() {
                 }
             </div>
         </div>
-            <div css={s.commentContainer(commentOpen)}>
+        <div css={s.commentContainer(commentOpen)}>
+            {
+                !!commentOpen &&
+                <Comment postId={commentOpen} />
+            }
+        </div>
+        <div css={s.followInfoContainer}>
 
-            </div> 
-    {/* <div css={s.followInfoContainer}>
-
-    </div> */}
-</div>
+        </div>
+    </div>
 }
 
 export default Home;

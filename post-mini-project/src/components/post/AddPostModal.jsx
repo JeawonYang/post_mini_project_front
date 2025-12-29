@@ -1,14 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import ReactModal from "react-modal";
-import * as s  from "./styles";
+import * as s from "./styles";
 import { useMeQuery } from "../../queries/usersQueries";
 import Loading from "../common/Loading";
 import Select from "react-select";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { IoIosClose } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
+import { createPost } from "../../apis/posts/postsApi";
 import { useCreatePostMutation } from "../../mutations/postMutations";
-ReactModal.setAppElement("#root");
 
 function AddPostModal({isOpen, onRequestClose, layoutRef, setHomeRefresh}) {
     const [ visibilityOption, setVisibilityOption ] = useState({label: "Public", value: "Public"});
@@ -16,14 +16,14 @@ function AddPostModal({isOpen, onRequestClose, layoutRef, setHomeRefresh}) {
     const [ uploadImages, setUploadImages ] = useState([]);
     const [ disabled, setDisabled ] = useState(true);
     const imageListBoxRef = useRef();
-    const { isLoading, data } = useMeQuery();
+    const {isLoading, data} = useMeQuery();
     const createPostMutation = useCreatePostMutation();
 
     useEffect(() => {
         setDisabled(!textareaValue && !uploadImages.length);
-    }, [textareaValue,uploadImages]);
+    }, [textareaValue, uploadImages]);
 
-    const handleOnWheel = (e) => {
+    const handleOnWheel = (e) => {  
         imageListBoxRef.current.scrollLeft += e.deltaY;
     }
 
@@ -38,13 +38,13 @@ function AddPostModal({isOpen, onRequestClose, layoutRef, setHomeRefresh}) {
             const {files} = e.target;
             const fileArray = Array.from(files);
 
-            const readFile = (file) => new Promise ((resolve) => {
+            const readFile = (file) => new Promise((resolve) => {
                 const fileReader = new FileReader();
                 fileReader.readAsDataURL(file);
                 fileReader.onload = (e) => {
                     resolve({
                         file,
-                        dataUrl: e.target.result,
+                        dataURL: e.target.result,
                     });
                 }
             });
@@ -82,16 +82,18 @@ function AddPostModal({isOpen, onRequestClose, layoutRef, setHomeRefresh}) {
     if (isLoading) {
         return <Loading />
     }
+
     return <ReactModal 
         style={{
             overlay: {
-                position : "absolute",
+                position: "absolute",
                 top: 0,
                 left: 0,
-                display : "flex",
-                justifyContent : "center",
-                alignItems : "center",
-                backgroundColor : "#00000000",
+                zIndex: 20,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#00000000"
             },
             content: {
                 position: "static",
@@ -116,17 +118,21 @@ function AddPostModal({isOpen, onRequestClose, layoutRef, setHomeRefresh}) {
                         <div css={s.profileImg(data.data.imgUrl)}></div>
                         <div>{data.data.nickname}</div>
                     </div>
-                        <Select 
+                    <Select
                         options={[
-                            {label : "Public", value : "Public"},
-                            {label : "Follow", value : "Follow"},
+                            {
+                                label: "Public",
+                                value: "Public"
+                            },
+                            {
+                                label: "Follow",
+                                value: "Follow"
+                            },
                         ]}
                         value={visibilityOption}
                         onChange={(option) => setVisibilityOption(option)} />
                     <div css={s.contentInputBox}>
-                        <textarea value={textareaValue} 
-                        onChange={(e) => setTextareaValue(e.target.value)}>
-                        </textarea>
+                        <textarea value={textareaValue} onChange={(e) => setTextareaValue(e.target.value)}></textarea>
                     </div>
                     <div css={s.uploadBox} onClick={handleFileLoadOnClick}>
                         <IoCloudUploadOutline />
@@ -136,9 +142,9 @@ function AddPostModal({isOpen, onRequestClose, layoutRef, setHomeRefresh}) {
                     <div css={s.imageListBox} ref={imageListBoxRef} onWheel={handleOnWheel}>
                         {
                             uploadImages.map((img, index) => (
-                            <div css={s.preview(img.dataUrl)}>
-                                <div onClick={() => handleImageDeleteOnClick(index)}><IoIosClose /></div>
-                            </div>
+                                <div css={s.preview(img.dataURL)}>
+                                    <div onClick={() => handleImageDeleteOnClick(index)}><IoIosClose /></div>
+                                </div>
                             ))
                         }
                     </div>

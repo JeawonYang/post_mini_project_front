@@ -38,6 +38,7 @@ export const modalLayout = css`
             box-sizing: border-box;
             border: none;
             background-color: transparent;
+            color: #222222;
             cursor: pointer;
             font-size: 16px;
         }
@@ -45,12 +46,10 @@ export const modalLayout = css`
 `;
 
 export const postButton = css`
-    text-shadow: 0 0 15px #00000066;
-    
+    text-shadow: 0 0 10px #000000aa;
     &:disabled {
         cursor: default;
         color: #777777;
-        
     }
 `;
 
@@ -135,7 +134,7 @@ export const preview = (url) => css`
     background-image: url(${url});
     background-position: center;
     background-size: cover;
-    
+
     &:not(:hover) > div {
         opacity: 0;
     }
@@ -150,12 +149,12 @@ export const preview = (url) => css`
         align-items: center;
         box-sizing: border-box;
         border: 1px solid #dbdbdb;
-        border-radius: 8%;
+        border-radius: 8px;
         width: 40px;
         height: 40px;
-        font-size: 20px;  
+        font-size: 20px;
         color: #ffffff;
         background-color: #00000066;
         cursor: pointer;
     }
-`;
+`

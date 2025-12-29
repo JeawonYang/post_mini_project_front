@@ -13,7 +13,7 @@ export const feedContainer = (commentOpen) => css`
     flex-direction: column;
     align-items: center;
     width: 60%;
-    overflow-y: ${ commentOpen ? "hidden" : "auto" };
+    overflow-y: ${commentOpen ? "hidden" : "auto"};
 
     &::-webkit-scrollbar {
         display: none;
@@ -25,11 +25,10 @@ export const followInfoContainer = css`
     margin-top: 20px;
     padding-left: 20px;
     width: 35%;
-
-`;
+`;  
 
 export const feedItemContainer = css`
-    margin: 20px;
+    margin-top: 20px;
     box-sizing: border-box;
     border-radius: 8px;
     padding: 10px;
@@ -51,7 +50,7 @@ export const feedItemContainer = css`
         gap: 5px;
         box-sizing: border-box;
         border-top: 1px solid #dbdbdb;
-        padding: 5px;
+        padding: 5px 5px 0;
 
         & > div {
             display: flex;
@@ -62,9 +61,8 @@ export const feedItemContainer = css`
         & > div:nth-of-type(1) {
             font-size: 24px;
         }
-
         & > div:nth-of-type(2) {
-            font-size: 24px;
+            font-size: 21px;
         }
     }
 `;
@@ -99,21 +97,22 @@ export const userInfo = css`
     }
 `;
 
-export const feedImageContainer = css`  
+export const feedImageContainer = css`
     & .slick-prev {
-        left: 25px;
+        left: 15px;
         z-index: 2;
         &::before {
             color: black;
+            font-size: 30px;
         }
-        
     }
 
     & .slick-next {
-        right: 25px;
+        right: 15px;
         z-index: 2;
         &::before {
             color: black;
+            font-size: 30px;
         }
     }
 `;
@@ -124,9 +123,7 @@ export const feedImage = (url) => css`
     background-image: url("${url}");
     background-position: center;
     background-size: cover;
-`;
-
-
+`
 
 export const feedContentContainer = css`
     box-sizing: border-box;
@@ -153,4 +150,3 @@ export const commentContainer = (commentOpen) => css`
     transition: all 0.2s ease-in-out;
     opacity: ${commentOpen ? 1 : 0};
 `;
-

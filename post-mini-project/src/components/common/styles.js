@@ -11,7 +11,7 @@ export const layout = css`
 export const frame = css`
     display: flex;
     box-sizing: border-box;
-    border: 2px solid #747474;
+    border: 3px solid #747474;
     border-radius: 30px;
     padding: 30px;
     min-width: 1000px;
@@ -32,7 +32,7 @@ export const frameContainer = css`
 
 
 
-/////////// Loading styles ///////////
+////////////<< Loading >>////////////
 export const loadingBox = css`
     display: flex;
     justify-content: center;
@@ -46,21 +46,19 @@ export const loadingBox = css`
     background-color: #00000066;
 `;
 
-/////////// <<LeftSideBar>> ///////////
-export const leftSideBar = css`
+////////////<< LeftSideBar >>////////////
+
+export const sideBarLayout = css`
     position: relative;
     display: flex;
     width: 100%;
     height: 100%;
-
-    & > div {
-        flex-grow:  1;
-    }
 `;
 
 export const sideBarContainer = css`
     display: flex;
     flex-direction: column;
+    min-width: 200px;
     width: 200px;
     height: 100%;
     background-color: #ffffff;
@@ -81,15 +79,13 @@ export const sideBarContainer = css`
         list-style-type: none;
         display: flex;
         flex-direction: column;
-        padding: 0;
         margin: 0;
+        padding: 0;
         gap: 8px;
         flex-grow: 1;
-        
         & > a {
             text-decoration: none;
             color: #222222;
-            
         }
     }
 
@@ -102,7 +98,7 @@ export const sideBarContainer = css`
             text-decoration: none;
             color: #222222;
             font-weight: 500;
-            text-shadow: 0 0 15px #000000;
+            text-shadow: 0 0 10px #00000088;
         }
     }
 `;
@@ -118,7 +114,7 @@ export const menuListItem = (isSelected) => css`
     transition: all 0.1s ease-in-out;
     box-shadow: 0 0 ${isSelected ? "10px 10px" : "0 0"} #0000000f inset;
     &:hover {
-        box-shadow: 0 0 15px #00000066;
+        text-shadow: 0 0 15px #00000066;
     }
 
     & > div {
@@ -134,8 +130,8 @@ export const menuListItem = (isSelected) => css`
 
 export const profileImg = (url) => css`
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     overflow: hidden;
     background-image: url(${url});
     background-position: center;
