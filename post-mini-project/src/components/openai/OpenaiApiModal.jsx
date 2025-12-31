@@ -12,6 +12,8 @@ function TypingEffect({text, speed = 50}){
     const [ displayText, setDisplayText ] = useState("");
     const textIndex = useRef(0);
 
+    useEffect
+
     useEffect(() => {
         const textArray = Array.from(text);
 
@@ -38,6 +40,7 @@ function OpenaiApiModal() {
     const [ inputValue, setInputValue ] = useState("");
     const [ isLoading, setLoading ] = useState(false);
     const [ disabled, setDisabled ] = useState(true);
+    const chatScroll = useRef();
 
     const handleOnKeyDown = (e) => {
         if (!e.shiftKey && e.key === "Enter") {
@@ -75,8 +78,15 @@ function OpenaiApiModal() {
             setLoading(false);
         }
     }, [chatData])
+    
+    useEffect(() => {
+        chatScroll.current?.scrollTo({
+            top: chatScroll.current.scrollHeight,
+            behavior: "smooth"
+        });
+    }, [chatData, isLoading])
 
-    return <div css={s.layout}>
+    return <div css={s.layout} ref={chatScroll}>
         <div css={s.chatContainer}>
             {
                 chatData.map((data, index) => {
@@ -86,7 +96,7 @@ function OpenaiApiModal() {
                         return <div key={index} css={s.answer}>
                             {
                                 !isLoading && !!data.content &&
-                                <TypingEffect text={data.content} speed={10}/>
+                                <TypingEffect text={data.content} speed={10} chatScroll={chatScroll}/>
                             }
                         </div>
                     } else {
